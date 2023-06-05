@@ -73,7 +73,7 @@ app.post('/anthropic', async (req, res) => {
       const requestData = {
         prompt,
         model: 'claude-v1',
-        max_tokens_to_sample: 300,
+        max_tokens_to_sample: 5000,
         stop_sequences: ['\n\nHuman:'],
       };
   
@@ -85,6 +85,10 @@ app.post('/anthropic', async (req, res) => {
       };
   
       const response = await axios.post(baseURL, requestData, { headers });
+
+      // Print the complete response from the Anthropic API
+      console.log('Anthropic API response:', response.data);
+
       const completion = response.data.completion;
   
       await getChatbotToken(completion, payload); // Await the getChatbotToken function
@@ -92,6 +96,7 @@ app.post('/anthropic', async (req, res) => {
       console.log('Error calling Anthropc API:', error);
     }
   }
+
   
   async function getChatbotToken(message, payload) {
     try {
